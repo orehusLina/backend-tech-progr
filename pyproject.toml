@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "poetryproject"
+version = "0.1.0"
+description = ""
+authors = ["Alina Orekhova <orehus.lina@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

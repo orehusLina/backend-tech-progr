@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Poetry
+.venv/
+poetry.lock
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# IDE/Редакторы
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
