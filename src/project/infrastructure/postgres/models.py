@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import Date, CHAR
 from sqlalchemy.orm import Mapped, mapped_column
 from project.infrastructure.postgres.database import Base
@@ -10,4 +12,4 @@ class Candidate(Base):
     candidate_name: Mapped[str] = mapped_column(CHAR(50), nullable=False)
     phone: Mapped[str] = mapped_column(CHAR(20), nullable=True)
     email: Mapped[str] = mapped_column(CHAR(50), nullable=True)
-    birth_date: Mapped[Date] = mapped_column(Date, nullable=True)
+    birth_date: Mapped[date] = mapped_column(Date, nullable=True)

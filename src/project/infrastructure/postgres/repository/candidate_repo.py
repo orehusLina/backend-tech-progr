@@ -26,9 +26,9 @@ class CandidateRepository:
         self,
         session: AsyncSession,
     ) -> list[CandidateSchema]:
-        query = f"select * from {settings.POSTGRES_SCHEMA}.candidate;"
+        query = f"select * from {settings.POSTGRES_SCHEMA}.candidates;"
 
-        users = await session.execute(text(query))
+        candidates = await session.execute(text(query))
 
         return [CandidateSchema.model_validate(obj=candidate) for candidate in candidates.mappings().all()]
 
