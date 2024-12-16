@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:16-alpine3.19
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    user: ${POSTGRES_USER}
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - app_db_network
+    ports:
+      - '127.0.0.1:5436:5432'
+    healthcheck:
+      # this command checks if the database is ready, right on the source db server
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    depends_on:
+      - postgres
+    image: fastapi_app
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
+    networks:
+      - app_db_network
+    ports:
+      - '127.0.0.1:8020:8000'
+    build:
+      context: .
+    pull_policy: build
+    entrypoint: sh -c "./src/start.sh"
+
+
+networks:
+  app_db_network:
+    name: app_db_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.16.0.0/16
+
+volumes:
+  db_data:
