@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Dict
+from typing import Any, AsyncIterator, Dict, AsyncGenerator
 
 from sqlalchemy import JSON, MetaData, String
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -37,3 +37,8 @@ metadata = MetaData(schema=settings.POSTGRES_SCHEMA)
 class Base(DeclarativeBase):
     metadata = metadata
     type_annotation_map = {str: String().with_variant(String(255), "postgresql"), Dict[str, Any]: JSON}
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with database.session() as session:
+        yield session
