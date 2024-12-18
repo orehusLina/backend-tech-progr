@@ -16,11 +16,16 @@ class EmployerRepository:
 
     async def create_employer(self, session: AsyncSession, employer_data: dict) -> EmployerSchema:
         query = f"""
-        INSERT INTO {settings.POSTGRES_SCHEMA}.employers (name, company, email)
-        VALUES (:name, :company, :email)
+        INSERT INTO {settings.POSTGRES_SCHEMA}.employers (employer_name, contact_name, phone, email)
+        VALUES (:employer_name, :contact_name, :phone, :email)
         RETURNING *;
         """
-        result = await session.execute(text(query), employer_data)
+        result = await session.execute(text(query), {
+            "employer_name": employer_data.get("employer_name"),
+            "contact_name": employer_data.get("contact_name"),
+            "phone": employer_data.get("phone"),
+            "email": employer_data.get("email"),
+        })
         row = result.mappings().first()
         await session.commit()
         return EmployerSchema.model_validate(obj=row)
@@ -36,15 +41,22 @@ class EmployerRepository:
         row = result.mappings().first()
         return EmployerSchema.model_validate(obj=row) if row else None
 
-    async def update_employer(self, session: AsyncSession, employer_id: int, update_data: dict) -> EmployerSchema | None:
+    async def update_employer(self, session: AsyncSession, employer_id: int,
+                              update_data: dict) -> EmployerSchema | None:
         query = f"""
         UPDATE {settings.POSTGRES_SCHEMA}.employers
-        SET name = :name, company = :company, email = :email
+        SET employer_name = :employer_name, contact_name = :contact_name, phone = :phone, email = :email
         WHERE employer_id = :employer_id
         RETURNING *;
         """
         update_data["employer_id"] = employer_id
-        result = await session.execute(text(query), update_data)
+        result = await session.execute(text(query), {
+            "employer_name": update_data.get("employer_name"),
+            "contact_name": update_data.get("contact_name"),
+            "phone": update_data.get("phone"),
+            "email": update_data.get("email"),
+            "employer_id": employer_id
+        })
         row = result.mappings().first()
         await session.commit()
         return EmployerSchema.model_validate(obj=row) if row else None
