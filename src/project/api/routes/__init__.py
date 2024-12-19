@@ -8,6 +8,7 @@ from .vacancy_skill_routes import router as vacancy_skill_router
 from .education_organization_routes import router as education_router
 from .candidate_education_routes import router as candidate_education_router
 from .accepted_person_routes import router as accepted_person_router
+from .resume_vacancy_routes import router as resume_vacancy_router
 
 from fastapi import APIRouter
 
@@ -22,3 +23,4 @@ router.include_router(vacancy_skill_router, prefix="/vacancies", tags=["Vacancy_
 router.include_router(education_router, prefix="/education", tags=["Education"])
 router.include_router(candidate_education_router, prefix="/candidates", tags=["Candidates_Education"])
 router.include_router(accepted_person_router, prefix="/accepted_person", tags=["Accepted_Person"])
+router.include_router(resume_vacancy_router, prefix="/resume_vacancies", tags=["Resume_Vacancies"])
